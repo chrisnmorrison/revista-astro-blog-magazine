@@ -16,7 +16,9 @@
 
 ## What is Revista?
 
-Revista is a free, open-source blog and magazine template built with [Astro](https://astro.build). It's designed to be fast, modern, and easy to customize. Simply write your articles in Markdown, place them in the content folder, and Revista will automatically create categories and articles!
+Revista is a free, open-source blog and magazine template built with [Astro](https://astro.build). It was migrated from an open-source Gatsby blog template that I release years ago.
+
+It's designed to be fast, modern, and easy to customize. Simply write your articles in Markdown, place them in the content folder, and Revista will automatically create categories and articles!
 
 **Perfect for:**
 - Personal blogs
