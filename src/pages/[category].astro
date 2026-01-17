@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Posts from '../components/Posts/Posts.astro';
+import { getPostsByCategory, getAllPosts } from '../utils/getPosts';
+import slugify from 'slugify';
+
+interface Props {
+  category: string;
+}
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const categories = new Set(posts.map((post) => post.data.category));
+  
+  return Array.from(categories).map((category) => {
+    const categorySlug = slugify(category, { lower: true });
+    
+    return {
+      params: {
+        category: categorySlug,
+      },
+      props: {
+        categoryName: category,
+      },
+    };
+  });
+}
+
+const { categoryName } = Astro.props;
+const posts = await getPostsByCategory(categoryName);
+
+// Format posts to match expected structure
+const formattedPosts = posts.map((post) => ({
+  id: post.id,
+  slug: post.slug,
+  excerpt: post.excerpt,
+  frontmatter: {
+    title: post.data.title,
+    category: post.data.category,
+    date: new Date(post.data.date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }),
+    image: post.data.image,
+  },
+  fields: {
+    timeToRead: {
+      words: post.readingTime.words,
+    },
+  },
+  readingTime: post.readingTime,
+  data: post.data,
+}));
+---
+
+<BaseLayout 
+  title={`${categoryName} | Revista`}
+  description={`Top Resources to Learn ${categoryName} for free.`}
+>
+  <Posts posts={formattedPosts} title={categoryName} />
+</BaseLayout>

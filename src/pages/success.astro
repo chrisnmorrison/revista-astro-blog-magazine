@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Success | Revista"
+  description="Thank you for contacting us"
+>
+  <section class="success-wrapper success-page">
+    <div class="page-center">
+      <h2 class="received">Thank you for contacting us, we have received your submission! </h2>
+      <a href="/" class="btn btn-outline-primary">
+        back home
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .success-wrapper.success-page {
+    background: white;
+  }
+
+  .success-wrapper .page-center {
+    margin: 30vh auto;
+    text-align: center;
+  }
+  
+  .success-wrapper .received {
+    margin-bottom: 3.5rem !important;
+  }
+
+  @media screen and (max-width: 980px) {
+    .success-wrapper .page-center {
+      margin: 10vh auto;
+      text-align: center;
+    }
+  }
+
+  @media screen and (max-width: 590px) {
+    .success-wrapper .received {
+      font-size: 1.5rem;
+    }
+  }
+</style>

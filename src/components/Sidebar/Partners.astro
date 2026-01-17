@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import Title from './Title.astro';
+import SidebarCard from './SidebarCard.astro';
+import logo from '../../assets/logo.png';
+import '../../css/components/sidebar/_sidebar-partners.scss';
+
+const partners = [
+  {
+    name: 'Other site',
+    logo: '',
+    logoAlt: 'Logo for other site',
+    url: 'https://example.com',
+  },
+];
+---
+
+<SidebarCard>
+  <div class="partners-wrapper">
+    <Title title="Our Partners" />
+    <p>Building an open internet together.</p>
+    {partners.map((partner) => (
+      <div key={partner.name} class="partner">
+        <Image
+          src={logo}
+          alt={partner.logoAlt || 'partner logo'}
+          class="partner-img"
+          width={35}
+          height={35}
+        />
+        <a target="_blank" rel="noopener noreferrer" class="partner-name" href={partner.url}>
+          {partner.name}
+        </a>
+      </div>
+    ))}
+  </div>
+</SidebarCard>

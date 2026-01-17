@@ -1,0 +1,24 @@
+---
+import { Image } from 'astro:assets';
+import SocialLinks from '../../constants/socialLinks';
+import Title from './Title.astro';
+import SidebarCard from './SidebarCard.astro';
+import logo from '../../assets/logo.png';
+import '../../css/components/sidebar/_sidebar-about.scss';
+---
+
+<SidebarCard>
+  <div class="about-wrapper">
+    <Title title="Who We Are" />
+    <Image
+      src={logo}
+      alt="author"
+      class="img"
+      width={100}
+      height={100}
+    />
+    <p>Find the best free educational resources on your favourite topic.</p>
+    <p>Revista is free and open-source forever.</p>
+    <SocialLinks client:load className="sidebar-icons" />
+  </div>
+</SidebarCard>
