@@ -46,6 +46,69 @@ const readingTimeMinutes = calculateReadingTime(post.readingTime.words);
 const categoryColor = getColor(post.data.category);
 const imageSrc = resolveImagePath(post.data.image);
 const categoryUrl = getCategoryUrl(post.data.category);
+
+const siteMetadata = {
+  url: import.meta.env.SITE || 'https://yourdomain.com',
+  title: 'Revista',
+};
+
+const postUrl = `${siteMetadata.url}${Astro.url.pathname}`;
+const fullImageSrc = imageSrc ? (imageSrc.startsWith('http') ? imageSrc : `${siteMetadata.url}${imageSrc}`) : undefined;
+
+// Structured data for articles
+const articleStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": post.data.title,
+  "description": post.excerpt,
+  "image": fullImageSrc ? [fullImageSrc] : undefined,
+  "datePublished": post.data.date.toISOString(),
+  "dateModified": post.data.date.toISOString(),
+  "author": {
+    "@type": "Organization",
+    "name": siteMetadata.title
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": siteMetadata.title,
+    "url": siteMetadata.url
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": postUrl
+  },
+  "articleSection": post.data.category,
+  "wordCount": post.readingTime.words,
+  "timeRequired": `PT${Math.ceil(readingTimeMinutes)}M`
+};
+
+// Breadcrumb structured data
+const breadcrumbStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": siteMetadata.url
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": post.data.category,
+      "item": `${siteMetadata.url}${categoryUrl}`
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": post.data.title,
+      "item": postUrl
+    }
+  ]
+};
+
+const structuredData = [articleStructuredData, breadcrumbStructuredData];
 ---
 
 <BaseLayout 
@@ -53,6 +116,7 @@ const categoryUrl = getCategoryUrl(post.data.category);
   description={post.excerpt}
   image={imageSrc}
   article={true}
+  structuredData={structuredData}
 >
   <section class="container" style="margin: 4rem auto;">
     <div class="row">

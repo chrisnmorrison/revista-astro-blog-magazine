@@ -11,9 +11,10 @@ interface Props {
   description?: string;
   image?: string;
   article?: boolean;
+  structuredData?: object | object[];
 }
 
-const { title, description, image, article } = Astro.props;
+const { title, description, image, article, structuredData } = Astro.props;
 
 const siteMetadata = {
   title: 'Revista',
@@ -52,6 +53,8 @@ const pageUrl = `${siteMetadata.url}${Astro.url.pathname}`;
     <meta property="og:image" content={pageImage} />
     <meta property="og:url" content={pageUrl} />
     <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:site_name" content={siteMetadata.title} />
+    <meta property="og:locale" content="en_US" />
     
     <meta name="twitter:card" content="summary_large_image" />
     {siteMetadata.twitterUsername && (
@@ -61,14 +64,26 @@ const pageUrl = `${siteMetadata.url}${Astro.url.pathname}`;
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={pageImage} />
     
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org/",
-      "@type": "Organization",
-      "description": siteMetadata.description,
-      "url": siteMetadata.url,
-      "homepage": siteMetadata.url,
-      "name": siteMetadata.title
-    })} />
+    {structuredData ? (
+      <>
+        {Array.isArray(structuredData) ? (
+          structuredData.map((data) => (
+            <script type="application/ld+json" set:html={JSON.stringify(data)} />
+          ))
+        ) : (
+          <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+        )}
+      </>
+    ) : (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Organization",
+        "description": siteMetadata.description,
+        "url": siteMetadata.url,
+        "homepage": siteMetadata.url,
+        "name": siteMetadata.title
+      })} />
+    )}
     
     <link rel="canonical" href={pageUrl} />
   </head>
