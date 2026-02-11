@@ -1,22 +1,25 @@
 ---
+/**
+ * CONTACT FORM — FABFORM.IO
+ * -------------------------
+ * Fabform.io is a lightweight form backend service that accepts simple
+ * HTML POST submissions and forwards the message to your email or integrations.
+ *
+ * Replace "xxxxx" in the action URL with your real Fabform form ID.
+ */
 ---
-
 <section class="get-in-touch">
   <h1 class="title">Get in touch</h1>
   <p class="note subtitle">
     Have a question? We'd love to hear from you. Send us a message and
     we'll respond as soon as possible.
   </p>
-  
-  <div id="feedback-msg" class="notification" style="display: none;">
-    <p id="feedback-text"></p>
-  </div>
-  
+
   <form
     name="contact"
     class="contact-form-styles contact-row"
     method="post"
-    id="contact-form"
+    action="https://fabform.io/f/xxxxx"
   >
     <div class="field">
       <div class="form-field col x-50">
@@ -24,143 +27,59 @@
           class="input-text js-input"
           type="text"
           name="name"
-          id="name"
           required
           placeholder="Name"
         />
       </div>
     </div>
+
     <div class="field">
       <div class="form-field col x-50">
         <input
           class="input-text js-input"
           type="email"
           name="email"
-          id="email"
           required
           placeholder="Email"
         />
       </div>
     </div>
+
     <div class="field">
       <div class="form-field col x-100">
         <textarea
           class="input-text js-input"
           name="message"
-          id="message"
           required
           placeholder="Message"
           rows="5"
         ></textarea>
       </div>
     </div>
+
     <div class="form-field submit col x-100 align-center">
       <button 
         class="btn btn-outline-primary contact-btn" 
         type="submit"
-        id="submit-btn"
       >
         Send
       </button>
     </div>
   </form>
-  
+
   <p class="note">
     Powered by{' '}
     <a
       class="link"
-      href="https://www.staticforms.xyz"
+      href="https://fabform.io"
       target="_blank"
       rel="noopener noreferrer"
     >
-      StaticForms.xyz
+      Fabform.io
     </a>
-    .{' '}
-    The information you submit in this form <u>is not stored</u>, per{' '}
-    <a
-      href="https://www.staticforms.xyz/privacy"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      Static Forms' Privacy Policy
-    </a>
-    . It is directly forwarded to our email.
+    .
   </p>
 </section>
-
-<script>
-  const form = document.getElementById('contact-form');
-  const feedbackMsg = document.getElementById('feedback-msg');
-  const feedbackText = document.getElementById('feedback-text');
-  const submitBtn = document.getElementById('submit-btn');
-  
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending...';
-      
-      feedbackMsg.style.display = 'none';
-      feedbackMsg.classList.remove('is-primary', 'is-danger');
-      
-      const formData = new FormData();
-      formData.append('apiKey', import.meta.env.PUBLIC_STATICFORMS_API_KEY || '');
-      const nameInput = document.getElementById('name');
-      const emailInput = document.getElementById('email');
-      const messageInput = document.getElementById('message');
-      
-      if (!nameInput || !emailInput || !messageInput) {
-        return;
-      }
-      
-      formData.append('name', nameInput.value);
-      formData.append('email', emailInput.value);
-      formData.append('message', messageInput.value);
-      formData.append('subject', 'New Contact Form Submission');
-      formData.append('replyTo', emailInput.value);
-      
-      const redirectUrl = import.meta.env.PUBLIC_STATICFORMS_REDIRECT_URL || '/success';
-      if (redirectUrl) {
-        formData.append('redirectTo', redirectUrl);
-      }
-      
-      try {
-        const response = await fetch('https://api.staticforms.dev/submit', {
-          method: 'POST',
-          body: formData,
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok && data.success) {
-          feedbackText.textContent = 'Message sent successfully! We\'ll get back to you soon.';
-          feedbackMsg.classList.add('is-primary');
-          feedbackMsg.style.display = 'block';
-          
-          form.reset();
-          
-          if (redirectUrl && redirectUrl !== window.location.pathname) {
-            setTimeout(() => {
-              window.location.href = redirectUrl;
-            }, 1500);
-          }
-        } else {
-          feedbackText.textContent = data.message || 'Error sending message. Please try again later.';
-          feedbackMsg.classList.add('is-danger');
-          feedbackMsg.style.display = 'block';
-        }
-      } catch (error) {
-        feedbackText.textContent = 'An unexpected error occurred. Please try again later.';
-        feedbackMsg.classList.add('is-danger');
-        feedbackMsg.style.display = 'block';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send';
-      }
-    });
-  }
-</script>
 
 <style>
   .align-center {
@@ -173,20 +92,6 @@
 
   input:focus label {
     color: transparent;
-  }
-
-  .notification {
-    padding: 1.5rem 2rem;
-    border-radius: 5px;
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .notification p {
-    line-height: 1.5;
-    margin-bottom: 0;
   }
 
   /* Grid */
@@ -310,22 +215,5 @@
       margin-bottom: 3rem !important;
     }
   }
-
-  .is-danger {
-    background-color: #f14668;
-    border-color: transparent;
-  }
-
-  .is-danger p {
-    color: #fff !important;
-  }
-
-  .is-primary {
-    background-color: #48c78e;
-    border-color: transparent;
-  }
-
-  .is-primary p {
-    color: #fff !important;
-  }
 </style>
+`
