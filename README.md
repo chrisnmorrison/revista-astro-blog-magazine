@@ -76,7 +76,7 @@ It's designed to be fast, modern, and easy to customize. Simply write your artic
 
 ## Demo
 
-**Live Demo:** [View Demo](https://revista-gatsby-blog-magazine.pages.dev/)
+**Live Demo:** [View Demo](https://revista-astro-blog-magazine.pages.dev/)
 
 ## Installation
 
